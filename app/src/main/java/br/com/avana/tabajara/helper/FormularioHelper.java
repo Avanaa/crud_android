@@ -26,6 +26,8 @@ public class FormularioHelper {
     private final EditText editTextEstado;
     private final EditText editTextPais;
 
+    private Pessoa pessoa;
+
     public FormularioHelper(FormularioActivity activity){
 
         this.activity = activity;
@@ -43,11 +45,11 @@ public class FormularioHelper {
         editTextCidade = activity.findViewById(R.id.formulario_end_cidade);
         editTextEstado = activity.findViewById(R.id.formulario_end_estado);
         editTextPais = activity.findViewById(R.id.formulario_end_pais);
+
+        pessoa = new Pessoa();
     }
 
     public Pessoa getPessoa(){
-
-        Pessoa pessoa = new Pessoa();
 
         pessoa.setNumero(editTextCodigo.getText().toString());
         pessoa.setNome(editTextNome.getText().toString());
@@ -79,5 +81,24 @@ public class FormularioHelper {
 
     public void setPessoa(Pessoa pessoa){
 
+        editTextCodigo.setText(pessoa.getNumero());
+        editTextNome.setText(pessoa.getNome());
+        editTextCpf.setText(pessoa.getCpf());
+        editTextTelefone.setText(pessoa.getTelefone());
+        editTextEmail.setText(pessoa.getEmail());
+
+        setEndereco(pessoa.getEndereco());
+    }
+
+    private void setEndereco(Endereco endereco){
+
+        editTextCep.setText(endereco.getCep());
+        editTextRua.setText(endereco.getRua());
+        editTextNumero.setText(endereco.getNumero());
+        editTextComplemento.setText(endereco.getComplemento());
+        editTextBairro.setText(endereco.getBairro());
+        editTextCidade.setText(endereco.getCidade());
+        editTextEstado.setText(endereco.getEstado());
+        editTextPais.setText(endereco.getPais());
     }
 }

@@ -1,8 +1,10 @@
 package br.com.avana.tabajara.model;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
-public class Pessoa implements Serializable {
+public class Pessoa implements Serializable, Comparable<Pessoa> {
 
     private String numero;
     private String nome;
@@ -62,5 +64,10 @@ public class Pessoa implements Serializable {
     @Override
     public String toString() {
         return ( this.getNumero() + " - " + this.getNome());
+    }
+
+    @Override
+    public int compareTo(@NonNull Pessoa o) {
+        return this.getNome().compareTo(o.getNome());
     }
 }

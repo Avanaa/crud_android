@@ -1,6 +1,7 @@
 package br.com.avana.tabajara.impl;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import br.com.avana.tabajara.interfaces.RepositorioArray;
 import br.com.avana.tabajara.model.Pessoa;
@@ -91,6 +92,7 @@ public class RepositorioArrayImpl implements RepositorioArray{
 
     @Override
     public boolean existe(String numero) {
+
         if(this.procurarIndice(numero) != NOT_FOUND){
             return true;
         } else {
@@ -103,10 +105,14 @@ public class RepositorioArrayImpl implements RepositorioArray{
     }
 
     public Pessoa[] getPessoas() {
+
         Pessoa[] pessoas = new Pessoa[getActualSize()];
+
         for (int i = 0; i < this.getActualSize(); i++){
             pessoas[i] = this.pessoas[i];
         }
+
+        Arrays.sort(pessoas);
         return pessoas;
     }
 }

@@ -1,6 +1,21 @@
 <resources>
     <string name="app_name">Tabajara</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Lista Pessoas -->
     <string name="lista_pessoas_lista_vazia">Ainda não existem registros</string>
-    <string name="title_activity_form">FormActivity</string>
+    <string name="lista_pessoas_action_settings">Ação ainda não disponível</string>
+    <string name="lista_pessoas_action_delete">Apagar</string>
+    <string name="lista_pessoas_saved">Salvo</string>
+    <string name="lista_pessoas_deleted">Apagado</string>
+    <string name="lista_pessoas_updated">Atualizado</string>
+    <string name="lista_pessoas_delete_err">Erro ao apagar</string>
+    <string name="lista_pessoas_update_err">Erro ao atualizar</string>
+    <string name="lista_pessoas_number_exists">Número já existe</string>
+    <string name="lista_pessoas_update_number_popup">Deseja atualizar registro existente com os dados novos inseridos?</string>
+    <string name="lista_pessoas_update_yes">Sim</string>
+    <string name="lista_pessoas_update_no">Não</string>
+
+    <!-- Formulário -->
+
 </resources>
