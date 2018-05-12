@@ -1,8 +1,9 @@
 package br.com.avana.tabajara;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import br.com.avana.tabajara.interfaces.RepositorioArray;
 import br.com.avana.tabajara.impl.RepositorioArrayImpl;
 import br.com.avana.tabajara.model.Pessoa;
 
@@ -32,11 +32,15 @@ public class ListaPessoas extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent goForm = new Intent(getApplicationContext(), FormularioActivity.class);
+                startActivityForResult(goForm, 1);
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         if (repo.getActualSize() > 0){
             ListView listaPessoas = (ListView) findViewById(R.id.lista_pessoas_listview);
             ArrayAdapter<Pessoa> adapter = new ArrayAdapter<Pessoa>(
@@ -47,23 +51,25 @@ public class ListaPessoas extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_lista_pessoas, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()){
+            case R.id.action_settings:
+                break;
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 1){
+            if (resultCode == Activity.RESULT_OK){
+                repo.inserir((Pessoa) data.getSerializableExtra("pessoa"));
+            }
+        }
     }
 }

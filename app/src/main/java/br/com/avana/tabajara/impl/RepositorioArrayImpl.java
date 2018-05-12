@@ -1,9 +1,11 @@
 package br.com.avana.tabajara.impl;
 
+import java.io.Serializable;
+
 import br.com.avana.tabajara.interfaces.RepositorioArray;
 import br.com.avana.tabajara.model.Pessoa;
 
-public class RepositorioArrayImpl implements RepositorioArray {
+public class RepositorioArrayImpl implements RepositorioArray{
 
     private static final int NOT_FOUND = -1;
     private static final int MAX_LENGTH_ARRAY = 50;
@@ -17,13 +19,13 @@ public class RepositorioArrayImpl implements RepositorioArray {
     }
 
     /*
-    * Retorna a posição no
-    * vetor onde se encontra a pessoa correspondente ao número
-    * passado como parâmetro, ou -1 se não existir no repositório.
-    * */
+     * Retorna a posição no
+     * vetor onde se encontra a pessoa correspondente ao número
+     * passado como parâmetro, ou -1 se não existir no repositório.
+     * */
     private int procurarIndice(String numero){
-        for(int i = 0; i < pessoas.length; i++){
-            if (pessoas[i].getNumero() == numero){
+        for(int i = 0; i < getActualSize(); i++){
+            if (pessoas[i].getNumero().equals(numero)){
                 return i;
             }
         }
@@ -36,16 +38,20 @@ public class RepositorioArrayImpl implements RepositorioArray {
         if(index != NOT_FOUND) {
             return this.pessoas[index];
         } else {
-         return null;
+            return null;
         }
     }
 
     @Override
     public boolean inserir(Pessoa pessoa) {
-        if(this.actualSize < MAX_LENGTH_ARRAY){
-            this.pessoas[this.actualSize] = pessoa;
-            this.actualSize++;
-            return true;
+        if(procurarIndice(pessoa.getNumero()) == NOT_FOUND){
+            if(this.actualSize < MAX_LENGTH_ARRAY){
+                this.pessoas[getActualSize()] = pessoa;
+                this.actualSize++;
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -55,7 +61,7 @@ public class RepositorioArrayImpl implements RepositorioArray {
     public boolean atualizar(Pessoa pessoa) {
         int index = this.procurarIndice(pessoa.getNumero());
         if (index != NOT_FOUND){
-            this.pessoas[index] = pessoa;
+            pessoas[index] = pessoa;
             return true;
         } else {
             return false;
@@ -67,8 +73,9 @@ public class RepositorioArrayImpl implements RepositorioArray {
         int index = this.procurarIndice(pessoa.getNumero());
         if (index != NOT_FOUND){
             for (int i = index; i < this.getActualSize(); i++){
-                this.pessoas[index] = this.pessoas[i+1];
+                pessoas[index] = pessoas[i+1];
             }
+            pessoas[getActualSize()] = null;
             this.actualSize --;
             return true;
         } else {

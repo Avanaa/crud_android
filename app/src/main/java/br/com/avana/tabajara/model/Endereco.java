@@ -1,9 +1,11 @@
 package br.com.avana.tabajara.model;
 
-class Endereco {
+import java.io.Serializable;
+
+public class Endereco implements Serializable{
 
     private String rua;
-    private int numero;
+    private String numero;
     private String complemento;
     private String cep;
     private String bairro;
@@ -19,11 +21,11 @@ class Endereco {
         this.rua = rua;
     }
 
-    public int getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(int numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 

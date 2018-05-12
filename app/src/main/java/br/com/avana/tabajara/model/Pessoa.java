@@ -1,6 +1,8 @@
 package br.com.avana.tabajara.model;
 
-public class Pessoa {
+import java.io.Serializable;
+
+public class Pessoa implements Serializable {
 
     private String numero;
     private String nome;
@@ -59,6 +61,6 @@ public class Pessoa {
 
     @Override
     public String toString() {
-        return this.getNome();
+        return ( this.getNumero() + " - " + this.getNome());
     }
 }
