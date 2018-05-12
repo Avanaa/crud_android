@@ -72,12 +72,18 @@ public class RepositorioArrayImpl implements RepositorioArray{
     public boolean remover(Pessoa pessoa) {
         int index = this.procurarIndice(pessoa.getNumero());
         if (index != NOT_FOUND){
+
+            pessoas[index] = null;
+
             for (int i = index; i < this.getActualSize(); i++){
-                pessoas[index] = pessoas[i+1];
+                pessoas[i] = pessoas[i+1];
             }
+
             pessoas[getActualSize()] = null;
-            this.actualSize --;
+
+            this.actualSize--;
             return true;
+
         } else {
             return false;
         }
@@ -97,7 +103,7 @@ public class RepositorioArrayImpl implements RepositorioArray{
     }
 
     public Pessoa[] getPessoas() {
-        Pessoa[] pessoas = new Pessoa[this.getActualSize()];
+        Pessoa[] pessoas = new Pessoa[getActualSize()];
         for (int i = 0; i < this.getActualSize(); i++){
             pessoas[i] = this.pessoas[i];
         }
