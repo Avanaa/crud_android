@@ -1,11 +1,13 @@
 package br.com.avana.tabajara.helper;
 
+import android.view.View;
 import android.widget.EditText;
 
 import br.com.avana.tabajara.FormularioActivity;
 import br.com.avana.tabajara.R;
 import br.com.avana.tabajara.model.Pessoa;
 import br.com.avana.tabajara.model.Endereco;
+import br.com.avana.tabajara.model.EnderecoNet;
 
 public class FormularioHelper {
 
@@ -68,13 +70,12 @@ public class FormularioHelper {
         Endereco endereco = new Endereco();
 
         endereco.setCep(editTextCep.getText().toString());
-        endereco.setRua(editTextRua.getText().toString());
+        endereco.setLogradouro(editTextRua.getText().toString());
         endereco.setNumero(editTextNumero.getText().toString());
         endereco.setComplemento(editTextComplemento.getText().toString());
         endereco.setBairro(editTextBairro.getText().toString());
-        endereco.setCidade(editTextCidade.getText().toString());
-        endereco.setEstado(editTextEstado.getText().toString());
-        endereco.setPais(editTextPais.getText().toString());
+        endereco.setLocalidade(editTextCidade.getText().toString());
+        endereco.setUf(editTextEstado.getText().toString());
 
         return endereco;
     }
@@ -93,12 +94,41 @@ public class FormularioHelper {
     private void setEndereco(Endereco endereco){
 
         editTextCep.setText(endereco.getCep());
-        editTextRua.setText(endereco.getRua());
+        editTextCep.setVisibility(View.VISIBLE);
+
+        editTextRua.setText(endereco.getLogradouro());
+        editTextRua.setVisibility(View.VISIBLE);
+
         editTextNumero.setText(endereco.getNumero());
+        editTextNumero.setVisibility(View.VISIBLE);
+
         editTextComplemento.setText(endereco.getComplemento());
+        editTextComplemento.setVisibility(View.VISIBLE);
+
         editTextBairro.setText(endereco.getBairro());
-        editTextCidade.setText(endereco.getCidade());
-        editTextEstado.setText(endereco.getEstado());
-        editTextPais.setText(endereco.getPais());
+        editTextBairro.setVisibility(View.VISIBLE);
+
+        editTextCidade.setText(endereco.getLocalidade());
+        editTextCidade.setVisibility(View.VISIBLE);
+
+        editTextEstado.setText(endereco.getUf());
+        editTextEstado.setVisibility(View.VISIBLE);
+    }
+
+    public String getCep() {
+        return  editTextCep.getText().toString();
+    }
+
+    public void setEnderecoByCep(EnderecoNet enderecoNet) {
+        Endereco endereco = new Endereco();
+
+        endereco.setCep(enderecoNet.getCep());
+        endereco.setLogradouro(enderecoNet.getLogradouro());
+        endereco.setComplemento(enderecoNet.getComplemento());
+        endereco.setBairro(enderecoNet.getBairro());
+        endereco.setLocalidade(enderecoNet.getLocalidade());
+        endereco.setUf(enderecoNet.getUf());
+
+        setEndereco(endereco);
     }
 }

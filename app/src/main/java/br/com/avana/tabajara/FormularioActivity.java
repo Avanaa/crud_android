@@ -6,14 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import br.com.avana.tabajara.async.EnderecoAsyncTask;
 import br.com.avana.tabajara.helper.FormularioHelper;
 import br.com.avana.tabajara.model.Pessoa;
 
 public class FormularioActivity extends AppCompatActivity {
 
-    FormularioHelper helper;
+    public FormularioHelper helper;
     private Pessoa pessoa;
 
     @Override
@@ -27,6 +30,15 @@ public class FormularioActivity extends AppCompatActivity {
         if (pessoa != null){
             helper.setPessoa(pessoa);
         }
+
+        Button btnValidaCep = findViewById(R.id.formulario_action_valida_cep);
+        btnValidaCep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] params = {helper.getCep()};
+                new EnderecoAsyncTask(FormularioActivity.this).execute(params);
+            }
+        });
     }
 
     @Override

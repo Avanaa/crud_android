@@ -15,6 +15,8 @@
     <string name="lista_pessoas_update_number_popup">Deseja atualizar registro existente com os dados novos inseridos?</string>
     <string name="lista_pessoas_update_yes">Sim</string>
     <string name="lista_pessoas_update_no">Não</string>
+    <string name="formulario_endereco_encontrado">Endereço encontrado</string>
+    <string name="formulario_action_valida_cep">Validar CEP</string>
 
     <!-- Formulário -->
 
