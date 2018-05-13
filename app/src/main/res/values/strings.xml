@@ -31,5 +31,6 @@
     <string name="validate_campo_vazio">Campo obrigatório</string>
     <string name="validate_campo_tamanho">Valor inválido</string>
     <string name="formulario_endereco_nao_encontrado">Endereço não encontrado</string>
+    <string name="progressbar_aguarde">Aguarde...</string>
 
 </resources>

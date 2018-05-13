@@ -66,7 +66,7 @@
                     android:layout_weight="1"
                     android:inputType="number"
                     android:hint="@string/formulario_cep"
-                    android:maxLines="2"
+                    android:maxLines="3"
                     tools:ignore="NestedWeights" />
 
                 <Button

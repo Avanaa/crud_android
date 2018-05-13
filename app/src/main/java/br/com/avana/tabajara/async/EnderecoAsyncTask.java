@@ -2,6 +2,7 @@ package br.com.avana.tabajara.async;
 
 import android.os.AsyncTask;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -15,7 +16,7 @@ import br.com.avana.tabajara.model.EnderecoNet;
 public class EnderecoAsyncTask extends AsyncTask<String, Object, EnderecoNet> {
 
     private FormularioActivity activity;
-    private ProgressBar progressBar;
+    private LinearLayout progressBar;
 
     public EnderecoAsyncTask(FormularioActivity activity) {
         this.activity = activity;
@@ -23,7 +24,7 @@ public class EnderecoAsyncTask extends AsyncTask<String, Object, EnderecoNet> {
 
     @Override
     protected void onPreExecute() {
-        progressBar = activity.findViewById(R.id.progressBar);
+        progressBar = activity.findViewById(R.id.progress_bar_layout);
         progressBar.setVisibility(View.VISIBLE);
     }
 
