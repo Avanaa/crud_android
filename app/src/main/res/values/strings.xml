@@ -2,7 +2,6 @@
     <string name="app_name">Tabajara</string>
     <string name="action_settings">Settings</string>
 
-    <!-- Lista Pessoas -->
     <string name="lista_pessoas_lista_vazia">Ainda não existem registros</string>
     <string name="lista_pessoas_action_settings">Ação ainda não disponível</string>
     <string name="lista_pessoas_action_delete">Apagar</string>
@@ -17,7 +16,20 @@
     <string name="lista_pessoas_update_no">Não</string>
     <string name="formulario_endereco_encontrado">Endereço encontrado</string>
     <string name="formulario_action_valida_cep">Validar CEP</string>
-
-    <!-- Formulário -->
+    <string name="formulario_numero">Codigo</string>
+    <string name="formulario_nome">Nome</string>
+    <string name="formulario_cpf">CPF</string>
+    <string name="formulario_email">Email</string>
+    <string name="formulario_telefone">Telefone com DDD</string>
+    <string name="formulario_cep">CEP</string>
+    <string name="formulario_end_rua">Rua</string>
+    <string name="formulario_end_numero">Numero</string>
+    <string name="formulario_end_complem">Complemento</string>
+    <string name="formulario_end_bairro">Bairro</string>
+    <string name="formulario_end_cidade">Cidade</string>
+    <string name="formulario_end_estado">UF</string>
+    <string name="validate_campo_vazio">Campo obrigatório</string>
+    <string name="validate_campo_tamanho">Valor inválido</string>
+    <string name="formulario_endereco_nao_encontrado">Endereço não encontrado</string>
 
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,21 +21,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:hint="Codigo"/>
+                android:hint="@string/formulario_numero"/>
 
             <EditText
                 android:id="@+id/formulario_nome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:hint="Nome"/>
+                android:hint="@string/formulario_nome"/>
 
             <EditText
                 android:id="@+id/formulario_cpf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="CPF"/>
+                android:inputType="text"
+                android:hint="@string/formulario_cpf"/>
 
             <EditText
                 android:id="@+id/formulario_email"
@@ -42,84 +43,87 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textEmailAddress"
-                android:hint="Email"/>
+                android:hint="@string/formulario_email"/>
 
             <EditText
                 android:id="@+id/formulario_telefone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
-                android:hint="Telefone"/>
+                android:hint="@string/formulario_telefone"/>
 
-            <EditText
-                android:id="@+id/formulario_end_cep"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="CEP"/>
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                tools:ignore="InefficientWeight">
 
-            <Button
-                android:id="@+id/formulario_action_valida_cep"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/formulario_action_valida_cep" />
+                <EditText
+                    android:id="@+id/formulario_end_cep"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="number"
+                    android:hint="@string/formulario_cep"
+                    android:maxLines="2"
+                    tools:ignore="NestedWeights" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/formulario_action_valida_cep"
+                    android:text="@string/formulario_action_valida_cep"
+                    tools:ignore="RelativeOverlap" />
+
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/formulario_end_rua"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:visibility="invisible"
-                android:hint="Rua"/>
+                android:hint="@string/formulario_end_rua"/>
 
             <EditText
                 android:id="@+id/formulario_end_numero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:visibility="invisible"
-                android:hint="Numero"/>
+                android:hint="@string/formulario_end_numero"/>
 
             <EditText
                 android:id="@+id/formulario_end_compl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:visibility="invisible"
-                android:hint="Complemento"/>
+                android:hint="@string/formulario_end_complem"/>
 
             <EditText
                 android:id="@+id/formulario_end_bairro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:visibility="invisible"
-                android:hint="Bairro"/>
+                android:hint="@string/formulario_end_bairro"/>
 
             <EditText
                 android:id="@+id/formulario_end_cidade"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:visibility="invisible"
-                android:hint="Cidade"/>
+                android:hint="@string/formulario_end_cidade"/>
 
             <EditText
                 android:id="@+id/formulario_end_estado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:visibility="invisible"
-                android:hint="Estado"/>
-
-            <EditText
-                android:id="@+id/formulario_end_pais"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:visibility="invisible"
-                android:hint="País"/>
+                android:hint="@string/formulario_end_estado"/>
 
         </LinearLayout>
     </ScrollView>
+
+    <include layout="@layout/progress_bar"/>
+
 </android.support.constraint.ConstraintLayout>

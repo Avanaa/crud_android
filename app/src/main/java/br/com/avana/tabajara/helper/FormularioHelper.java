@@ -8,6 +8,8 @@ import br.com.avana.tabajara.R;
 import br.com.avana.tabajara.model.Pessoa;
 import br.com.avana.tabajara.model.Endereco;
 import br.com.avana.tabajara.model.EnderecoNet;
+import br.com.avana.tabajara.util.MaskType;
+import br.com.avana.tabajara.util.MaskUtil;
 
 public class FormularioHelper {
 
@@ -26,7 +28,6 @@ public class FormularioHelper {
     private final EditText editTextBairro;
     private final EditText editTextCidade;
     private final EditText editTextEstado;
-    private final EditText editTextPais;
 
     private Pessoa pessoa;
 
@@ -46,7 +47,6 @@ public class FormularioHelper {
         editTextBairro = activity.findViewById(R.id.formulario_end_bairro);
         editTextCidade = activity.findViewById(R.id.formulario_end_cidade);
         editTextEstado = activity.findViewById(R.id.formulario_end_estado);
-        editTextPais = activity.findViewById(R.id.formulario_end_pais);
 
         pessoa = new Pessoa();
     }
@@ -55,9 +55,9 @@ public class FormularioHelper {
 
         pessoa.setNumero(editTextCodigo.getText().toString());
         pessoa.setNome(editTextNome.getText().toString());
-        pessoa.setCpf(editTextCpf.getText().toString());
+        pessoa.setCpf(MaskUtil.unmask(editTextCpf.getText().toString()));
         pessoa.setEmail(editTextEmail.getText().toString());
-        pessoa.setTelefone(editTextTelefone.getText().toString());
+        pessoa.setTelefone(MaskUtil.unmask(editTextTelefone.getText().toString()));
 
         Endereco endereco = getEndereco();
         pessoa.setEndereco(endereco);
@@ -69,7 +69,7 @@ public class FormularioHelper {
 
         Endereco endereco = new Endereco();
 
-        endereco.setCep(editTextCep.getText().toString());
+        endereco.setCep(MaskUtil.unmask(editTextCep.getText().toString()));
         endereco.setLogradouro(editTextRua.getText().toString());
         endereco.setNumero(editTextNumero.getText().toString());
         endereco.setComplemento(editTextComplemento.getText().toString());
@@ -82,47 +82,37 @@ public class FormularioHelper {
 
     public void setPessoa(Pessoa pessoa){
 
-        editTextCodigo.setText(pessoa.getNumero());
-        editTextNome.setText(pessoa.getNome());
-        editTextCpf.setText(pessoa.getCpf());
-        editTextTelefone.setText(pessoa.getTelefone());
-        editTextEmail.setText(pessoa.getEmail());
+        if (pessoa != null){
+            editTextCodigo.setText(pessoa.getNumero());
+            editTextNome.setText(pessoa.getNome());
+            editTextCpf.setText(MaskUtil.masker(pessoa.getCpf(), MaskType.CPF_MASK_TYPE));
+            editTextTelefone.setText(MaskUtil.masker(pessoa.getTelefone(), MaskType.PHONE_MASK_TPYE));
+            editTextEmail.setText(pessoa.getEmail());
 
-        setEndereco(pessoa.getEndereco());
+            setEndereco(pessoa.getEndereco());
+        }
     }
 
     private void setEndereco(Endereco endereco){
 
-        editTextCep.setText(endereco.getCep());
-        editTextCep.setVisibility(View.VISIBLE);
-
+        editTextCep.setText(MaskUtil.masker(endereco.getCep(), MaskType.CEP_MASK_TYPE));
         editTextRua.setText(endereco.getLogradouro());
-        editTextRua.setVisibility(View.VISIBLE);
-
         editTextNumero.setText(endereco.getNumero());
-        editTextNumero.setVisibility(View.VISIBLE);
-
         editTextComplemento.setText(endereco.getComplemento());
-        editTextComplemento.setVisibility(View.VISIBLE);
-
         editTextBairro.setText(endereco.getBairro());
-        editTextBairro.setVisibility(View.VISIBLE);
-
         editTextCidade.setText(endereco.getLocalidade());
-        editTextCidade.setVisibility(View.VISIBLE);
-
-        editTextEstado.setText(endereco.getUf());
-        editTextEstado.setVisibility(View.VISIBLE);
+        editTextEstado.setText(endereco.getUf().toUpperCase());
     }
 
     public String getCep() {
-        return  editTextCep.getText().toString();
+        return  MaskUtil.unmask(editTextCep.getText().toString());
     }
 
     public void setEnderecoByCep(EnderecoNet enderecoNet) {
+
         Endereco endereco = new Endereco();
 
-        endereco.setCep(enderecoNet.getCep());
+        endereco.setCep(enderecoNet.getCep().replaceAll("-", ""));
         endereco.setLogradouro(enderecoNet.getLogradouro());
         endereco.setComplemento(enderecoNet.getComplemento());
         endereco.setBairro(enderecoNet.getBairro());
@@ -130,5 +120,52 @@ public class FormularioHelper {
         endereco.setUf(enderecoNet.getUf());
 
         setEndereco(endereco);
+    }
+
+    public boolean validarFormulario() {
+
+        boolean valid;
+
+        if (validaCampo(editTextCodigo, 1, 9)
+                && validaCampo(editTextNome, 3, 30)
+                && validaCampo(editTextCpf, 11, 11)
+                && validaCampo(editTextEmail, 10, 30)
+                && validaCampo(editTextTelefone, 11, 11)
+                && validaCampo(editTextCep, 8, 8)
+                && validaCampo(editTextRua, 2, 30)
+                && validaCampo(editTextBairro, 5, 30)
+                && validaCampo(editTextCidade, 3, 20)
+                && validaCampo(editTextEstado, 2, 2)){
+            valid = true;
+        } else {
+            valid = false;
+        }
+        return valid;
+    }
+
+    private boolean validaCampo(EditText editText, int min, int max){
+        if ((editText.getText().toString().equals(""))
+                || (editText.getText().toString().length() == 0)){
+
+            editText.setError(activity.getString(R.string.validate_campo_vazio));
+            editText.setFocusable(true);
+            editText.requestFocus();
+            return false;
+        } else {
+            return validaTamanhoCampo(editText, min, max);
+        }
+    }
+
+    private boolean validaTamanhoCampo(EditText editText, int min, int max){
+        if ((editText.getText().toString().replaceAll("[^0-9A-Za-z]*", "").length() < min)
+                || (editText.getText().toString().replaceAll("[^0-9a-zA-Z]*", "").length() > max)){
+
+            editText.setError(activity.getString(R.string.validate_campo_tamanho));
+            editText.setFocusable(true);
+            editText.requestFocus();
+            return false;
+        } else {
+            return true;
+        }
     }
 }
