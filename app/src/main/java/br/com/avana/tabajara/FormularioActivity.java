@@ -2,15 +2,14 @@ package br.com.avana.tabajara;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import br.com.avana.tabajara.async.EnderecoAsyncTask;
 import br.com.avana.tabajara.helper.FormularioHelper;
@@ -27,6 +26,9 @@ public class FormularioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario);
+
+        Toolbar toolbar = findViewById(R.id.formulario_toolbar);
+        setSupportActionBar(toolbar);
 
         helper = new FormularioHelper(this);
 

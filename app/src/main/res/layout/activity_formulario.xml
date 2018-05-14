@@ -1,129 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FormularioActivity">
+    tools:context="br.com.avana.tabajara.FormularioActivity">
 
-    <ScrollView
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/formulario_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="?android:attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:title="@string/title_activity_form"
+            android:theme="@style/ToolbarTheme"/>
 
-            <EditText
-                android:id="@+id/formulario_numero"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="@string/formulario_numero"/>
+    </android.support.design.widget.AppBarLayout>
 
-            <EditText
-                android:id="@+id/formulario_nome"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/formulario_nome"/>
-
-            <EditText
-                android:id="@+id/formulario_cpf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/formulario_cpf"/>
-
-            <EditText
-                android:id="@+id/formulario_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textEmailAddress"
-                android:hint="@string/formulario_email"/>
-
-            <EditText
-                android:id="@+id/formulario_telefone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:hint="@string/formulario_telefone"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                tools:ignore="InefficientWeight">
-
-                <EditText
-                    android:id="@+id/formulario_end_cep"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:inputType="number"
-                    android:hint="@string/formulario_cep"
-                    android:maxLines="3"
-                    tools:ignore="NestedWeights" />
-
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/formulario_action_valida_cep"
-                    android:text="@string/formulario_action_valida_cep"
-                    tools:ignore="RelativeOverlap" />
-
-            </LinearLayout>
-
-            <EditText
-                android:id="@+id/formulario_end_rua"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/formulario_end_rua"/>
-
-            <EditText
-                android:id="@+id/formulario_end_numero"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="@string/formulario_end_numero"/>
-
-            <EditText
-                android:id="@+id/formulario_end_compl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/formulario_end_complem"/>
-
-            <EditText
-                android:id="@+id/formulario_end_bairro"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/formulario_end_bairro"/>
-
-            <EditText
-                android:id="@+id/formulario_end_cidade"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/formulario_end_cidade"/>
-
-            <EditText
-                android:id="@+id/formulario_end_estado"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/formulario_end_estado"/>
-
-        </LinearLayout>
-    </ScrollView>
-
+    <include layout="@layout/content_formulario" />
     <include layout="@layout/progress_bar"/>
 
-</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

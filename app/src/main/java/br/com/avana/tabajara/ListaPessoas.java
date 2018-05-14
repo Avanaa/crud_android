@@ -177,7 +177,7 @@ public class ListaPessoas extends AppCompatActivity {
     }
 
     private void createList() {
-        if (repo.getActualSize() > 0){
+        if (repo.getActualSize() >= 0){
 
             ArrayAdapter<Pessoa> adapter = new ArrayAdapter<Pessoa>(
                     this, android.R.layout.simple_expandable_list_item_1, repo.getPessoas());
