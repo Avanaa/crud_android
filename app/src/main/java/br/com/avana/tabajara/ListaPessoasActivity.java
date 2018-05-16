@@ -45,7 +45,7 @@ public class ListaPessoasActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goForm(null, Constants.NEW_REGISTER);
+                goForm(null,Constants.NEW_REGISTER);
             }
         });
         registerForContextMenu(listaPessoas);
@@ -82,13 +82,7 @@ public class ListaPessoasActivity extends AppCompatActivity {
                 return true;
             }
         });
-
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -110,7 +104,7 @@ public class ListaPessoasActivity extends AppCompatActivity {
                 }
                 break;
 
-            case Constants.UPDATE_REGISTER:
+            case Constants.DELETE_REGISTER:
                 if (resultCode == Activity.RESULT_OK){
 
                     Pessoa pessoa = (Pessoa) data.getSerializableExtra("pessoa");
@@ -122,6 +116,15 @@ public class ListaPessoasActivity extends AppCompatActivity {
                     }
                 }
                 break;
+        }
+
+        if (resultCode == Constants.DELETE_REGISTER){
+
+            Pessoa pessoa = (Pessoa) data.getSerializableExtra("pessoa");
+            if (pessoa != null){
+                repo.remover(pessoa);
+                createList();
+            }
         }
     }
 
@@ -153,43 +156,6 @@ public class ListaPessoasActivity extends AppCompatActivity {
 
         return builder;
     }
-    /*
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo) {
-
-        MenuItem delete = menu.add(R.string.lista_pessoas_action_delete);
-        delete.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-
-                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-                Pessoa pessoa = (Pessoa) listaPessoas.getItemAtPosition(info.position);
-
-                if (repo.remover(pessoa)){
-                    Toast.makeText(getApplicationContext(), R.string.lista_pessoas_deleted, Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.lista_pessoas_delete_err, Toast.LENGTH_LONG).show();
-                }
-                createList();
-                return false;
-            }
-        });
-
-        MenuItem edit = menu.add("Editar");
-        edit.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-
-                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-                Pessoa pessoa = (Pessoa) listaPessoas.getItemAtPosition(info.position);
-                goForm(pessoa, UPDATE_REGISTER);
-
-                createList();
-                return false;
-            }
-        });
-    }
-    */
 
     public void goForm(Pessoa pessoa, int code) {
         Intent goForm = new Intent(getApplicationContext(), FormularioActivity.class);

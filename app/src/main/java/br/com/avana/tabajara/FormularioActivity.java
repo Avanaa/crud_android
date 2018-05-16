@@ -14,6 +14,7 @@ import android.widget.EditText;
 import br.com.avana.tabajara.async.EnderecoAsyncTask;
 import br.com.avana.tabajara.helper.FormularioHelper;
 import br.com.avana.tabajara.model.Pessoa;
+import br.com.avana.tabajara.util.Constants;
 import br.com.avana.tabajara.util.MaskType;
 import br.com.avana.tabajara.util.MaskUtil;
 
@@ -69,7 +70,6 @@ public class FormularioActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_formulario, menu);
-
         return true;
     }
 
@@ -86,6 +86,16 @@ public class FormularioActivity extends AppCompatActivity {
                     finish();
                 }
                 break;
+
+            case R.id.formulario_action_delete:
+                if (pessoa != null){
+
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("pessoa", pessoa);
+
+                    setResult(Constants.DELETE_REGISTER, resultIntent);
+                    finish();
+                }
         }
         return super.onOptionsItemSelected(item);
     }
