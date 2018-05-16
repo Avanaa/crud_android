@@ -57,8 +57,19 @@ public class FormularioActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        if (pessoa == null){
+            MenuItem delete = menu.findItem(R.id.formulario_action_delete);
+            delete.setVisible(false);
+        }
+        return true;
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_formulario, menu);
+
         return true;
     }
 

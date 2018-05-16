@@ -3,6 +3,7 @@ package br.com.avana.tabajara.model;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 public class Pessoa implements Serializable, Comparable<Pessoa> {
 

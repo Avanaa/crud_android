@@ -1,5 +1,6 @@
 package br.com.avana.tabajara.helper;
 
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
@@ -84,6 +85,7 @@ public class FormularioHelper {
 
         if (pessoa != null){
             editTextCodigo.setText(pessoa.getNumero());
+            editTextCodigo.setInputType(InputType.TYPE_NULL);
             editTextNome.setText(pessoa.getNome());
             editTextCpf.setText(MaskUtil.masker(pessoa.getCpf(), MaskType.CPF_MASK_TYPE));
             editTextTelefone.setText(MaskUtil.masker(pessoa.getTelefone(), MaskType.PHONE_MASK_TPYE));
@@ -110,14 +112,18 @@ public class FormularioHelper {
 
     public void setEnderecoByCep(EnderecoNet enderecoNet) {
 
+        if (enderecoNet == null){
+            return;
+        }
+
         Endereco endereco = new Endereco();
 
-        endereco.setCep(enderecoNet.getCep().replaceAll("-", ""));
-        endereco.setLogradouro(enderecoNet.getLogradouro());
-        endereco.setComplemento(enderecoNet.getComplemento());
-        endereco.setBairro(enderecoNet.getBairro());
-        endereco.setLocalidade(enderecoNet.getLocalidade());
-        endereco.setUf(enderecoNet.getUf());
+        endereco.setCep((enderecoNet.getCep() != null) ? enderecoNet.getCep().replaceAll("-", "") : "");
+        endereco.setLogradouro((enderecoNet.getLogradouro() != null) ? enderecoNet.getLogradouro() : "");
+        endereco.setComplemento((enderecoNet.getComplemento() != null) ? enderecoNet.getComplemento() : "");
+        endereco.setBairro((enderecoNet.getBairro() != null) ? enderecoNet.getBairro() : "");
+        endereco.setLocalidade((enderecoNet.getLocalidade() != null) ? enderecoNet.getLocalidade() : "");
+        endereco.setUf((enderecoNet.getUf() != null) ? enderecoNet.getUf() : "");
 
         setEndereco(endereco);
     }

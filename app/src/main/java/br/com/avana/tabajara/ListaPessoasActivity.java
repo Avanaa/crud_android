@@ -8,25 +8,27 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.support.v7.widget.SearchView;
 import android.widget.Toast;
 
+import br.com.avana.tabajara.adapter.ListaPessoasAdapter;
 import br.com.avana.tabajara.impl.RepositorioArrayImpl;
 import br.com.avana.tabajara.model.Pessoa;
+import br.com.avana.tabajara.util.Constants;
 
-public class ListaPessoas extends AppCompatActivity {
+public class ListaPessoasActivity extends AppCompatActivity {
 
     public RepositorioArrayImpl repo;
     private ListView listaPessoas;
+    private ListaPessoasAdapter adapter;
 
-    private static final int NEW_REGISTER = 1;
-    private static final int UPDATE_REGISTER = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class ListaPessoas extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goForm(null, NEW_REGISTER);
+                goForm(null, Constants.NEW_REGISTER);
             }
         });
         registerForContextMenu(listaPessoas);
@@ -58,16 +60,34 @@ public class ListaPessoas extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_lista_pessoas, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        SearchView searchview = (SearchView) searchItem.getActionView();
+
+        searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                if (TextUtils.isEmpty(s)){
+                    adapter.filter(s);
+                    listaPessoas.clearTextFilter();
+                } else {
+                    adapter.filter(s);
+                }
+                return true;
+            }
+        });
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.action_settings:
-                Toast.makeText(this, R.string.lista_pessoas_action_settings, Toast.LENGTH_LONG).show();
-                break;
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -76,7 +96,7 @@ public class ListaPessoas extends AppCompatActivity {
 
         switch (requestCode){
 
-            case NEW_REGISTER:
+            case Constants.NEW_REGISTER:
                 if (resultCode == Activity.RESULT_OK){
 
                     Pessoa pessoa = (Pessoa) data.getSerializableExtra("pessoa");
@@ -90,7 +110,7 @@ public class ListaPessoas extends AppCompatActivity {
                 }
                 break;
 
-            case UPDATE_REGISTER:
+            case Constants.UPDATE_REGISTER:
                 if (resultCode == Activity.RESULT_OK){
 
                     Pessoa pessoa = (Pessoa) data.getSerializableExtra("pessoa");
@@ -127,13 +147,13 @@ public class ListaPessoas extends AppCompatActivity {
         builder.setNegativeButton(R.string.lista_pessoas_update_no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                goForm(pessoa, NEW_REGISTER);
+                goForm(pessoa, Constants.NEW_REGISTER);
             }
         });
 
         return builder;
     }
-
+    /*
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo) {
 
@@ -169,8 +189,9 @@ public class ListaPessoas extends AppCompatActivity {
             }
         });
     }
+    */
 
-    private void goForm(Pessoa pessoa, int code) {
+    public void goForm(Pessoa pessoa, int code) {
         Intent goForm = new Intent(getApplicationContext(), FormularioActivity.class);
         goForm.putExtra("pessoa", pessoa);
         startActivityForResult(goForm, code);
@@ -179,8 +200,7 @@ public class ListaPessoas extends AppCompatActivity {
     private void createList() {
         if (repo.getActualSize() >= 0){
 
-            ArrayAdapter<Pessoa> adapter = new ArrayAdapter<Pessoa>(
-                    this, android.R.layout.simple_expandable_list_item_1, repo.getPessoas());
+            adapter = new ListaPessoasAdapter(repo.getPessoas(), this);
 
             listaPessoas.setAdapter(adapter);
 

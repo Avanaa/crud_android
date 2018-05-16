@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme.NoActionBar">
 
         <activity
-            android:name=".ListaPessoas"
+            android:name=".ListaPessoasActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

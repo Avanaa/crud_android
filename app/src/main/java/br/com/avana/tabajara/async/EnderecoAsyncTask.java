@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import br.com.avana.tabajara.FormularioActivity;
 import br.com.avana.tabajara.R;
 import br.com.avana.tabajara.http.WebClient;
+import br.com.avana.tabajara.model.Endereco;
 import br.com.avana.tabajara.model.EnderecoNet;
 
 public class EnderecoAsyncTask extends AsyncTask<String, Object, EnderecoNet> {
@@ -35,16 +36,17 @@ public class EnderecoAsyncTask extends AsyncTask<String, Object, EnderecoNet> {
         String resposta = webClient.getJsonByCep(params[0]);
 
         Gson gson = new Gson();
-        return gson.fromJson(resposta, EnderecoNet.class);
+        try {
+            return gson.fromJson(resposta, EnderecoNet.class);
+        } catch (Exception e){
+            return null;
+        }
     }
 
     @Override
     protected void onPostExecute(EnderecoNet endereco) {
         if (endereco != null){
             activity.helper.setEnderecoByCep(endereco);
-            Toast.makeText(activity, R.string.formulario_endereco_encontrado, Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(activity, R.string.formulario_endereco_nao_encontrado, Toast.LENGTH_LONG).show();
         }
         progressBar.setVisibility(View.INVISIBLE);
     }

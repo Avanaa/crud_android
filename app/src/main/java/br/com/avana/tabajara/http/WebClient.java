@@ -24,15 +24,11 @@ public class WebClient {
             connection.setRequestProperty("Accept", "application/json");
             connection.connect();
 
-            int responseCode = connection.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK){
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK){
                 return readStream(connection.getInputStream());
             }
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            return null;
         }
         return null;
     }
@@ -40,26 +36,26 @@ public class WebClient {
     private String readStream(InputStream inputStream) throws IOException {
 
         BufferedReader bf = null;
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         try{
             bf = new BufferedReader(new InputStreamReader(inputStream));
-            String line = new String("");
+            String line = "";
 
             while ((line = bf.readLine()) != null){
                 sb.append(line);
             }
-
         }
         catch (IOException e){
-            throw new IOException();
-        }
-        finally {
+            return null;
+        } finally {
             try {
                 if (bf != null){
                     bf.close();
                 }
-            } catch (IOException e) {throw new IOException();}
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return sb.toString();
     }

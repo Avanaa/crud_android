@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.com.avana.tabajara.ListaPessoas">
+    tools:context="br.com.avana.tabajara.ListaPessoasActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -15,7 +15,6 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways"
             android:theme="@style/ToolbarTheme"/>
 
     </android.support.design.widget.AppBarLayout>

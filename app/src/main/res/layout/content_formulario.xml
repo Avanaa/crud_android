@@ -31,7 +31,7 @@
             android:id="@+id/formulario_cpf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:inputType="number"
             android:hint="@string/formulario_cpf"/>
 
         <EditText
@@ -52,9 +52,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            tools:ignore="InefficientWeight">
+            android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/formulario_end_cep"
@@ -63,7 +61,6 @@
                 android:layout_weight="1"
                 android:inputType="number"
                 android:hint="@string/formulario_cep"
-                android:maxLines="3"
                 tools:ignore="NestedWeights" />
 
             <Button
@@ -72,7 +69,7 @@
                 android:layout_weight="1"
                 android:id="@+id/formulario_action_valida_cep"
                 android:text="@string/formulario_action_valida_cep"
-                tools:ignore="RelativeOverlap" />
+                tools:ignore="NestedWeights" />
 
         </LinearLayout>
 
@@ -116,6 +113,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
+            android:maxLength="2"
             android:hint="@string/formulario_end_estado"/>
 
     </LinearLayout>
