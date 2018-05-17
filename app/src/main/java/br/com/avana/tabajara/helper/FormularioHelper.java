@@ -85,7 +85,7 @@ public class FormularioHelper {
 
         if (pessoa != null){
             editTextCodigo.setText(pessoa.getNumero());
-            editTextCodigo.setInputType(InputType.TYPE_NULL);
+            editTextCodigo.setEnabled(false);
             editTextNome.setText(pessoa.getNome());
             editTextCpf.setText(MaskUtil.masker(pessoa.getCpf(), MaskType.CPF_MASK_TYPE));
             editTextTelefone.setText(MaskUtil.masker(pessoa.getTelefone(), MaskType.PHONE_MASK_TPYE));

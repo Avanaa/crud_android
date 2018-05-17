@@ -33,11 +33,6 @@ public class FormularioActivity extends AppCompatActivity {
 
         helper = new FormularioHelper(this);
 
-        pessoa = (Pessoa) getIntent().getSerializableExtra("pessoa");
-        if (pessoa != null){
-            helper.setPessoa(pessoa);
-        }
-
         Button btnValidaCep = findViewById(R.id.formulario_action_valida_cep);
         btnValidaCep.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +50,16 @@ public class FormularioActivity extends AppCompatActivity {
 
         EditText editTextCep = findViewById(R.id.formulario_end_cep);
         editTextCep.addTextChangedListener(MaskUtil.insert(editTextCep, MaskType.CEP_MASK_TYPE));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        pessoa = (Pessoa) getIntent().getSerializableExtra("pessoa");
+        if (pessoa != null){
+            helper.setPessoa(pessoa);
+        }
     }
 
     @Override
@@ -82,21 +87,24 @@ public class FormularioActivity extends AppCompatActivity {
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("pessoa", helper.getPessoa());
 
-                    setResult(Activity.RESULT_OK, resultIntent);
+                    if (pessoa != null){
+                        setResult(Constants.UPDATE_REGISTER_OK, resultIntent);
+                    } else {
+                        setResult(Constants.CREATE_REGISTER_OK, resultIntent);
+                    }
                     finish();
                 }
                 break;
 
             case R.id.formulario_action_delete:
                 if (pessoa != null){
-
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("pessoa", pessoa);
 
-                    setResult(Constants.DELETE_REGISTER, resultIntent);
+                    setResult(Constants.DELETE_REGISTER_OK, resultIntent);
                     finish();
                 }
         }
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }

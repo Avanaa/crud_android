@@ -1,5 +1,6 @@
 package br.com.avana.tabajara.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import br.com.avana.tabajara.FormularioActivity;
@@ -27,9 +29,7 @@ public class ListaPessoasAdapter extends BaseAdapter {
 
         this.pessoas = new ArrayList<Pessoa>();
 
-        for (Pessoa pessoa : pessoas){
-            this.pessoas.add(pessoa);
-        }
+        this.pessoas.addAll(Arrays.asList(pessoas));
         this.activity = activity;
     }
 
@@ -48,6 +48,7 @@ public class ListaPessoasAdapter extends BaseAdapter {
         return 0;
     }
 
+    @SuppressLint("ViewHolder")
     @Override
     public View getView(int position, View view, ViewGroup parent) {
 
@@ -55,11 +56,8 @@ public class ListaPessoasAdapter extends BaseAdapter {
 
         final Pessoa pessoa = getItem(position);
 
-        TextView codigo = view.findViewById(R.id.item_lista_codigo);
-        codigo.setText(pessoa.getNumero());
-
-        TextView nome = view.findViewById(R.id.item_lista_nome);
-        nome.setText(pessoa.getNome());
+        TextView descricao = view.findViewById(R.id.item_lista_descricao);
+        descricao.setText(pessoa.toString());
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,10 +72,8 @@ public class ListaPessoasAdapter extends BaseAdapter {
         charText = charText.toLowerCase();
 
         pessoas.clear();
-        if (charText == ""){
-            for (Pessoa pessoa : pessoasArray){
-                pessoas.add(pessoa);
-            }
+        if (charText.equals("")){
+            pessoas.addAll(Arrays.asList(pessoasArray));
         } else {
             for (Pessoa pessoa : pessoasArray){
                 if (pessoa.toString().toLowerCase().contains(charText)){

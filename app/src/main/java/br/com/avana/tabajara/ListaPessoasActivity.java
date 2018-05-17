@@ -1,6 +1,5 @@
 package br.com.avana.tabajara;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,11 +8,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.ContextMenu;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.support.v7.widget.SearchView;
 import android.widget.Toast;
@@ -28,7 +25,6 @@ public class ListaPessoasActivity extends AppCompatActivity {
     public RepositorioArrayImpl repo;
     private ListView listaPessoas;
     private ListaPessoasAdapter adapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +41,7 @@ public class ListaPessoasActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                goForm(null,Constants.NEW_REGISTER);
+                goForm(null,Constants.CREATE_REGISTER);
             }
         });
         registerForContextMenu(listaPessoas);
@@ -61,9 +57,8 @@ public class ListaPessoasActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_lista_pessoas, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-
-        SearchView searchview = (SearchView) searchItem.getActionView();
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchview = (SearchView) searchItem.getActionView();
 
         searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -90,52 +85,68 @@ public class ListaPessoasActivity extends AppCompatActivity {
 
         switch (requestCode){
 
-            case Constants.NEW_REGISTER:
-                if (resultCode == Activity.RESULT_OK){
+            case Constants.CREATE_REGISTER:
+
+                if (resultCode == Constants.CREATE_REGISTER_OK){
 
                     Pessoa pessoa = (Pessoa) data.getSerializableExtra("pessoa");
 
                     if(repo.inserir(pessoa)){
                         Toast.makeText(this, R.string.lista_pessoas_saved, Toast.LENGTH_LONG).show();
                     } else {
-                        AlertDialog.Builder builder = createBuilder(pessoa);
+                        AlertDialog.Builder builder = createBuilderNovoRegistro(pessoa);
                         builder.show();
                     }
                 }
                 break;
 
-            case Constants.DELETE_REGISTER:
-                if (resultCode == Activity.RESULT_OK){
+            case Constants.UPDATE_REGISTER:
 
+                if (resultCode == Constants.UPDATE_REGISTER_OK){
                     Pessoa pessoa = (Pessoa) data.getSerializableExtra("pessoa");
-
-                    if(repo.atualizar(pessoa)){
-                        Toast.makeText(this, R.string.lista_pessoas_updated, Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(this, R.string.lista_pessoas_update_err, Toast.LENGTH_LONG).show();
-                    }
+                    AlertDialog.Builder builder = createBuilderAtualizar(pessoa);
+                    builder.show();
                 }
-                break;
-        }
 
-        if (resultCode == Constants.DELETE_REGISTER){
-
-            Pessoa pessoa = (Pessoa) data.getSerializableExtra("pessoa");
-            if (pessoa != null){
-                repo.remover(pessoa);
-                createList();
-            }
+                if (resultCode == Constants.DELETE_REGISTER_OK){
+                    Pessoa pessoa = (Pessoa) data.getSerializableExtra("pessoa");
+                    AlertDialog.Builder builder = createBuilderDeletar(pessoa);
+                    builder.show();
+                }
         }
     }
 
-    private AlertDialog.Builder createBuilder(final Pessoa pessoa) {
+    private AlertDialog.Builder createBuilderNovoRegistro(final Pessoa pessoa) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle(R.string.lista_pessoas_number_exists);
-        builder.setMessage(getString(R.string.lista_pessoas_update_number_popup));
+        builder.setTitle(R.string.lista_pessoas_popup_insert);
+        builder.setMessage(getString(R.string.lista_pessoas_popup_insert_desc));
 
-        builder.setPositiveButton(R.string.lista_pessoas_update_yes, new DialogInterface.OnClickListener(){
+        builder.setPositiveButton(R.string.lista_pessoas_popup_yes, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                goForm(pessoa, Constants.CREATE_REGISTER);
+            }
+        });
+
+        builder.setNegativeButton(R.string.lista_pessoas_popup_no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), R.string.lista_pessoas_popup_canceled, Toast.LENGTH_LONG).show();
+            }
+        });
+        return builder;
+    }
+
+    private AlertDialog.Builder createBuilderAtualizar(final Pessoa pessoa) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(R.string.lista_pessoas_popup_update);
+        builder.setMessage(getString(R.string.lista_pessoas_popup_update_desc));
+
+        builder.setPositiveButton(R.string.lista_pessoas_popup_yes, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (repo.atualizar(pessoa)){
@@ -147,13 +158,41 @@ public class ListaPessoasActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton(R.string.lista_pessoas_update_no, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.lista_pessoas_popup_no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                goForm(pessoa, Constants.NEW_REGISTER);
+                goForm(pessoa, Constants.CREATE_REGISTER);
             }
         });
 
+        return builder;
+    }
+
+    private AlertDialog.Builder createBuilderDeletar(final Pessoa pessoa) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(R.string.lista_pessoas_popup_delete);
+        builder.setMessage(R.string.lista_pessoas_popup_delete_desc);
+
+        builder.setPositiveButton(R.string.lista_pessoas_popup_yes, new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (repo.remover(pessoa)){
+                    Toast.makeText(getApplicationContext(), R.string.lista_pessoas_deleted, Toast.LENGTH_LONG).show();
+                    createList();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.lista_pessoas_delete_err, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        builder.setNegativeButton(R.string.lista_pessoas_popup_no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                goForm(pessoa, Constants.CREATE_REGISTER);
+            }
+        });
         return builder;
     }
 
@@ -167,16 +206,7 @@ public class ListaPessoasActivity extends AppCompatActivity {
         if (repo.getActualSize() >= 0){
 
             adapter = new ListaPessoasAdapter(repo.getPessoas(), this);
-
             listaPessoas.setAdapter(adapter);
-
-            listaPessoas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> lista, View item, int position, long id) {
-                    Pessoa pessoa = (Pessoa) lista.getItemAtPosition(position);
-                    Toast.makeText(getApplicationContext(), pessoa.getNome(), Toast.LENGTH_LONG).show();
-                }
-            });
 
         } else {
             Toast.makeText(this, R.string.lista_pessoas_lista_vazia, Toast.LENGTH_LONG).show();
