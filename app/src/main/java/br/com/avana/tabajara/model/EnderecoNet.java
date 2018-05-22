@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class EnderecoNet implements Serializable {
 
+    private long id;
     private String cep;
     private String logradouro;
     private String complemento;
@@ -13,6 +14,14 @@ public class EnderecoNet implements Serializable {
     private String unidade;
     private String ibge;
     private String guia;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getCep() {
         return cep;

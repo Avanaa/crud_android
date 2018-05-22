@@ -1,5 +1,6 @@
 package br.com.avana.tabajara;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,13 +17,12 @@ import android.support.v7.widget.SearchView;
 import android.widget.Toast;
 
 import br.com.avana.tabajara.adapter.ListaPessoasAdapter;
-import br.com.avana.tabajara.impl.RepositorioArrayImpl;
+import br.com.avana.tabajara.dao.PessoaDAOImpl;
 import br.com.avana.tabajara.model.Pessoa;
 import br.com.avana.tabajara.util.Constants;
 
 public class ListaPessoasActivity extends AppCompatActivity {
 
-    public RepositorioArrayImpl repo;
     private ListView listaPessoas;
     private ListaPessoasAdapter adapter;
 
@@ -35,7 +35,6 @@ public class ListaPessoasActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         listaPessoas = (ListView) findViewById(R.id.lista_pessoas_listview);
-        repo = new RepositorioArrayImpl();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.lista_pessoas_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -83,89 +82,34 @@ public class ListaPessoasActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        PessoaDAOImpl dao = new PessoaDAOImpl(this);
+
         switch (requestCode){
 
             case Constants.CREATE_REGISTER:
 
-                if (resultCode == Constants.CREATE_REGISTER_OK){
-
+                if (resultCode == Activity.RESULT_OK){
                     Pessoa pessoa = (Pessoa) data.getSerializableExtra("pessoa");
-
-                    if(repo.inserir(pessoa)){
-                        Toast.makeText(this, R.string.lista_pessoas_saved, Toast.LENGTH_LONG).show();
-                    } else {
-                        AlertDialog.Builder builder = createBuilderNovoRegistro(pessoa);
-                        builder.show();
-                    }
+                    dao.insert(pessoa);
                 }
                 break;
 
             case Constants.UPDATE_REGISTER:
 
-                if (resultCode == Constants.UPDATE_REGISTER_OK){
+                if (resultCode == Activity.RESULT_OK){
                     Pessoa pessoa = (Pessoa) data.getSerializableExtra("pessoa");
-                    AlertDialog.Builder builder = createBuilderAtualizar(pessoa);
-                    builder.show();
+                    dao.update(pessoa);
                 }
 
-                if (resultCode == Constants.DELETE_REGISTER_OK){
+                if (resultCode == Constants.DELETE_REGISTER){
                     Pessoa pessoa = (Pessoa) data.getSerializableExtra("pessoa");
                     AlertDialog.Builder builder = createBuilderDeletar(pessoa);
                     builder.show();
                 }
+                break;
         }
-    }
-
-    private AlertDialog.Builder createBuilderNovoRegistro(final Pessoa pessoa) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle(R.string.lista_pessoas_popup_insert);
-        builder.setMessage(getString(R.string.lista_pessoas_popup_insert_desc));
-
-        builder.setPositiveButton(R.string.lista_pessoas_popup_yes, new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                goForm(pessoa, Constants.CREATE_REGISTER);
-            }
-        });
-
-        builder.setNegativeButton(R.string.lista_pessoas_popup_no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(), R.string.lista_pessoas_popup_canceled, Toast.LENGTH_LONG).show();
-            }
-        });
-        return builder;
-    }
-
-    private AlertDialog.Builder createBuilderAtualizar(final Pessoa pessoa) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setTitle(R.string.lista_pessoas_popup_update);
-        builder.setMessage(getString(R.string.lista_pessoas_popup_update_desc));
-
-        builder.setPositiveButton(R.string.lista_pessoas_popup_yes, new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (repo.atualizar(pessoa)){
-                    Toast.makeText(getApplicationContext(), R.string.lista_pessoas_updated, Toast.LENGTH_LONG).show();
-                    createList();
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.lista_pessoas_update_err, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        builder.setNegativeButton(R.string.lista_pessoas_popup_no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                goForm(pessoa, Constants.CREATE_REGISTER);
-            }
-        });
-
-        return builder;
+        createList();
+        dao.close();
     }
 
     private AlertDialog.Builder createBuilderDeletar(final Pessoa pessoa) {
@@ -178,12 +122,11 @@ public class ListaPessoasActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.lista_pessoas_popup_yes, new DialogInterface.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (repo.remover(pessoa)){
-                    Toast.makeText(getApplicationContext(), R.string.lista_pessoas_deleted, Toast.LENGTH_LONG).show();
-                    createList();
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.lista_pessoas_delete_err, Toast.LENGTH_LONG).show();
-                }
+                PessoaDAOImpl dao = new PessoaDAOImpl(ListaPessoasActivity.this);
+                dao.delete(pessoa);
+                dao.close();
+                Toast.makeText(getApplicationContext(), R.string.lista_pessoas_deleted, Toast.LENGTH_LONG).show();
+                createList();
             }
         });
 
@@ -197,19 +140,17 @@ public class ListaPessoasActivity extends AppCompatActivity {
     }
 
     public void goForm(Pessoa pessoa, int code) {
+
         Intent goForm = new Intent(getApplicationContext(), FormularioActivity.class);
         goForm.putExtra("pessoa", pessoa);
         startActivityForResult(goForm, code);
     }
 
     private void createList() {
-        if (repo.getActualSize() >= 0){
 
-            adapter = new ListaPessoasAdapter(repo.getPessoas(), this);
-            listaPessoas.setAdapter(adapter);
-
-        } else {
-            Toast.makeText(this, R.string.lista_pessoas_lista_vazia, Toast.LENGTH_LONG).show();
-        }
+        PessoaDAOImpl dao = new PessoaDAOImpl(this);
+        adapter = new ListaPessoasAdapter(dao.getAll(), this);
+        listaPessoas.setAdapter(adapter);
+        dao.close();
     }
 }

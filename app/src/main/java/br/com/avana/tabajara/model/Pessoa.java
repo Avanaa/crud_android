@@ -7,19 +7,19 @@ import java.util.Collection;
 
 public class Pessoa implements Serializable, Comparable<Pessoa> {
 
-    private String numero;
+    private long id;
     private String nome;
     private String cpf;
     private Endereco endereco;
     private String telefone;
     private String email;
 
-    public String getNumero() {
-        return this.numero;
+    public long getId() {
+        return this.id;
     }
 
-    public void setNumero(String numero) {
-        this.numero = numero;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -64,7 +64,7 @@ public class Pessoa implements Serializable, Comparable<Pessoa> {
 
     @Override
     public String toString() {
-        return ( this.getNumero() + " - " + this.getNome());
+        return this.getNome();
     }
 
     @Override

@@ -20,16 +20,16 @@ import br.com.avana.tabajara.util.Constants;
 public class ListaPessoasAdapter extends BaseAdapter {
 
     private List<Pessoa> pessoas;
-    private  Pessoa[] pessoasArray;
+    private  List<Pessoa> pessoasArray;
     private ListaPessoasActivity activity;
 
-    public ListaPessoasAdapter(Pessoa[] pessoas, ListaPessoasActivity activity) {
+    public ListaPessoasAdapter(List<Pessoa> pessoas, ListaPessoasActivity activity) {
 
         pessoasArray = pessoas;
 
         this.pessoas = new ArrayList<Pessoa>();
 
-        this.pessoas.addAll(Arrays.asList(pessoas));
+        this.pessoas.addAll(pessoas);
         this.activity = activity;
     }
 
@@ -45,7 +45,7 @@ public class ListaPessoasAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return getItem(position).getId();
     }
 
     @SuppressLint("ViewHolder")
@@ -65,6 +65,7 @@ public class ListaPessoasAdapter extends BaseAdapter {
                 activity.goForm(pessoa, Constants.UPDATE_REGISTER);
             }
         });
+
         return view;
     }
 
@@ -73,7 +74,7 @@ public class ListaPessoasAdapter extends BaseAdapter {
 
         pessoas.clear();
         if (charText.equals("")){
-            pessoas.addAll(Arrays.asList(pessoasArray));
+            pessoas.addAll(pessoasArray);
         } else {
             for (Pessoa pessoa : pessoasArray){
                 if (pessoa.toString().toLowerCase().contains(charText)){

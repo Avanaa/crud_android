@@ -16,7 +16,6 @@ public class FormularioHelper {
 
     private FormularioActivity activity;
 
-    private final EditText editTextCodigo;
     private final EditText editTextNome;
     private final EditText editTextCpf;
     private final EditText editTextEmail;
@@ -36,7 +35,6 @@ public class FormularioHelper {
 
         this.activity = activity;
 
-        editTextCodigo = activity.findViewById(R.id.formulario_numero);
         editTextNome = activity.findViewById(R.id.formulario_nome);
         editTextCpf = activity.findViewById(R.id.formulario_cpf);
         editTextEmail = activity.findViewById(R.id.formulario_email);
@@ -54,7 +52,6 @@ public class FormularioHelper {
 
     public Pessoa getPessoa(){
 
-        pessoa.setNumero(editTextCodigo.getText().toString());
         pessoa.setNome(editTextNome.getText().toString());
         pessoa.setCpf(MaskUtil.unmask(editTextCpf.getText().toString()));
         pessoa.setEmail(editTextEmail.getText().toString());
@@ -84,8 +81,6 @@ public class FormularioHelper {
     public void setPessoa(Pessoa pessoa){
 
         if (pessoa != null){
-            editTextCodigo.setText(pessoa.getNumero());
-            editTextCodigo.setEnabled(false);
             editTextNome.setText(pessoa.getNome());
             editTextCpf.setText(MaskUtil.masker(pessoa.getCpf(), MaskType.CPF_MASK_TYPE));
             editTextTelefone.setText(MaskUtil.masker(pessoa.getTelefone(), MaskType.PHONE_MASK_TPYE));
@@ -132,8 +127,7 @@ public class FormularioHelper {
 
         boolean valid;
 
-        if (validaCampo(editTextCodigo, 1, 9)
-                && validaCampo(editTextNome, 3, 30)
+        if (validaCampo(editTextNome, 3, 30)
                 && validaCampo(editTextCpf, 11, 11)
                 && validaCampo(editTextEmail, 10, 30)
                 && validaCampo(editTextTelefone, 11, 11)

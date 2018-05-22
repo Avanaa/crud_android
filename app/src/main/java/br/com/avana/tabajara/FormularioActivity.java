@@ -25,6 +25,7 @@ public class FormularioActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario);
 
@@ -84,24 +85,27 @@ public class FormularioActivity extends AppCompatActivity {
 
             case R.id.formulario_action_save:
                 if(helper.validarFormulario()){
+
                     Intent resultIntent = new Intent();
-                    resultIntent.putExtra("pessoa", helper.getPessoa());
+                    setResult(Activity.RESULT_OK, resultIntent);
+
+                    Pessoa p = helper.getPessoa();
 
                     if (pessoa != null){
-                        setResult(Constants.UPDATE_REGISTER_OK, resultIntent);
-                    } else {
-                        setResult(Constants.CREATE_REGISTER_OK, resultIntent);
+                        p.setId(pessoa.getId());
                     }
+                    resultIntent.putExtra("pessoa", p);
                     finish();
                 }
                 break;
 
             case R.id.formulario_action_delete:
+
                 if (pessoa != null){
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("pessoa", pessoa);
 
-                    setResult(Constants.DELETE_REGISTER_OK, resultIntent);
+                    setResult(Constants.DELETE_REGISTER, resultIntent);
                     finish();
                 }
         }
