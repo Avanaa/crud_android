@@ -7,8 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,14 +20,16 @@ import android.support.v7.widget.SearchView;
 import android.widget.Toast;
 
 import br.com.avana.tabajara.adapter.ListaPessoasAdapter;
+import br.com.avana.tabajara.adapter.PessoaAdapter;
 import br.com.avana.tabajara.dao.PessoaDAOImpl;
+import br.com.avana.tabajara.interfaces.PessoaDAO;
 import br.com.avana.tabajara.model.Pessoa;
 import br.com.avana.tabajara.util.Constants;
 
 public class ListaPessoasActivity extends AppCompatActivity {
 
-    private ListView listaPessoas;
-    private ListaPessoasAdapter adapter;
+    private RecyclerView listaPessoas;
+    private PessoaAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +39,14 @@ public class ListaPessoasActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        listaPessoas = (ListView) findViewById(R.id.lista_pessoas_listview);
+        listaPessoas = (RecyclerView) findViewById(R.id.lista_pessoas_recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        listaPessoas.setLayoutManager(layoutManager);
+
+        PessoaDAO dao = new PessoaDAOImpl(this);
+        adapter = new PessoaAdapter(dao.getAll());
+        listaPessoas.setAdapter(adapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.lista_pessoas_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -68,10 +80,10 @@ public class ListaPessoasActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String s) {
                 if (TextUtils.isEmpty(s)){
-                    adapter.filter(s);
-                    listaPessoas.clearTextFilter();
+                    //adapter.filter(s);
+                    //listaPessoas.clearTextFilter();
                 } else {
-                    adapter.filter(s);
+                    //adapter.filter(s);
                 }
                 return true;
             }
@@ -149,8 +161,8 @@ public class ListaPessoasActivity extends AppCompatActivity {
     private void createList() {
 
         PessoaDAOImpl dao = new PessoaDAOImpl(this);
-        adapter = new ListaPessoasAdapter(dao.getAll(), this);
-        listaPessoas.setAdapter(adapter);
+        adapter = new PessoaAdapter(dao.getAll());
         dao.close();
+        listaPessoas.setAdapter(adapter);
     }
 }

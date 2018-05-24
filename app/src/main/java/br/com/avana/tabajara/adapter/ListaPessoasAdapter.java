@@ -20,15 +20,13 @@ import br.com.avana.tabajara.util.Constants;
 public class ListaPessoasAdapter extends BaseAdapter {
 
     private List<Pessoa> pessoas;
-    private  List<Pessoa> pessoasArray;
+    private List<Pessoa> pessoasArray;
     private ListaPessoasActivity activity;
 
     public ListaPessoasAdapter(List<Pessoa> pessoas, ListaPessoasActivity activity) {
 
         pessoasArray = pessoas;
-
         this.pessoas = new ArrayList<Pessoa>();
-
         this.pessoas.addAll(pessoas);
         this.activity = activity;
     }
@@ -50,9 +48,14 @@ public class ListaPessoasAdapter extends BaseAdapter {
 
     @SuppressLint("ViewHolder")
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
 
-        view = activity.getLayoutInflater().inflate(R.layout.item_lista_pessoas, parent, false);
+        View view;
+
+        view = convertView;
+        if (view == null){
+            view = activity.getLayoutInflater().inflate(R.layout.item_lista_pessoas, parent, false);
+        }
 
         final Pessoa pessoa = getItem(position);
 

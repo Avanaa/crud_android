@@ -6,11 +6,17 @@ import android.widget.TextView;
 
 import br.com.avana.tabajara.R;
 
-public class ItemHolder extends RecyclerView.ViewHolder {
+public class PessoaHolder extends RecyclerView.ViewHolder {
 
-    public ItemHolder(View itemView) {
+    private TextView descricao;
+
+    public PessoaHolder(View itemView) {
         super(itemView);
 
-        TextView descricao = itemView.findViewById(R.id.item_lista_descricao);
+        descricao = itemView.findViewById(R.id.item_lista_descricao);
+    }
+
+    public TextView getDescricao() {
+        return descricao;
     }
 }

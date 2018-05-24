@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="50dp">
+    android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/lista_pessoas_listview"
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/item_lista_pessoas"
+        android:id="@+id/lista_pessoas_recycler_view">
 
-</android.support.design.widget.CoordinatorLayout>
+    </android.support.v7.widget.RecyclerView>
+</android.support.constraint.ConstraintLayout>
